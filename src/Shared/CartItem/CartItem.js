@@ -8,8 +8,6 @@ export default function CartItem({
   cart_total,
   chg_cart_total,
 }) {
-  const base_URL = "https://cartify-2.onrender.com";
-
   // console.log("rr" + cartData.product.price*cartData.quantity);
   const [quantity, setQuantity] = useState(cartData.quantity);
   const [citemPrice, setcitemPrice] = useState(
@@ -52,11 +50,7 @@ export default function CartItem({
           {product.thumbnail ? (
             <img
               class="d-block w-100 img-fluid"
-              src={`${cartData.product.thumbnail
-                .split("/media/")
-                .pop()
-                .split("%3A")
-                .join(":")}`}
+              src={`${cartData.product.thumbnail}`}
               alt=""
             />
           ) : (
