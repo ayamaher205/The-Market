@@ -52,9 +52,9 @@ export default function CartItem({
           {product.thumbnail ? (
             <img
               class="d-block w-100 img-fluid"
-              src={`https://i.imgur.com/rGvyTns.jpeg+${cartData.product.thumbnail
+              src={`base_URL+${cartData.product.thumbnail
                 .split("/")
-                .pop()`}
+                .pop()}`}
               alt=""
             />
           ) : (
