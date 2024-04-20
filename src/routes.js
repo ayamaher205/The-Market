@@ -1,4 +1,9 @@
-import { createBrowserRouter, Outlet, Route, redirect } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  Navigate,
+  redirect,
+} from "react-router-dom";
 import Header from "./Pages/Header/header";
 import CategoriesSection from "./Pages/CategoriesSection/CategoriesSection";
 import ShoppingCart from "./Pages/ShoppingCart/ShoppingCart";
@@ -40,6 +45,33 @@ const ProtectedLayout = () => {
     );
   }
 };
+function PrivateRoute({ children }) {
+  //const isAuthenticated = checkUserAuthentication();
+  return (localStorage.getItem("Token"))? children : <Navigate to="/login" />;
+}
+
+ /* const router = createBrowserRouter([
+   {
+     path: "/account",
+     element: (
+       <PrivateRoute>
+         <Profile />
+       </PrivateRoute>
+     ),
+   },
+   {
+     path: "/login",
+     element: (
+       <>
+      <Header />
+      <Login />
+      <Footer />
+       </>
+     ),
+   },
+   // Other routes...
+ ]);
+ */
 
 
 const router = createBrowserRouter([
@@ -48,7 +80,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:  <> <CategoriesSection /> <ProductsList /> <ServicesSection/> </>
+        element: (
+          <>
+            {" "}
+            <CategoriesSection /> <ProductsList /> <ServicesSection />{" "}
+          </>
+        ),
       },
       {
         path: "/shop",
@@ -59,9 +96,6 @@ const router = createBrowserRouter([
         path: "/products/:id",
         element: <ProductDetails />,
       },
-    ],
-    element: <ProtectedLayout />,
-    children:[
       {
         path: "/cart",
         element: <ShoppingCart />,
@@ -72,32 +106,45 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SignUp/>,
+        element: <SignUp />,
       },
       {
         path: "/account",
-        element: <Profile/>,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/wishlist",
-        element: <Wishlist />,
+        element: (
+          <PrivateRoute>
+            < Wishlist />
+          </PrivateRoute>
+        )
       },
       {
         path: "/updateprofile",
-        element: <UpdateProfile />,
+        element:
+          (<PrivateRoute>
+            <UpdateProfile />,
+          </PrivateRoute>
+
+          )
       },
-      { 
+      {
         path: "/orders",
-        element: <AllOrders/>,
+        element: <AllOrders />,
       },
       {
-      path: "/order-details/:id",
-      element: <OrderItems/>,
+        path: "/order-details/:id",
+        element: <OrderItems />,
       },
       {
-        path: '*',
-        element:<NotFound/>
-      }
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
 ]);
