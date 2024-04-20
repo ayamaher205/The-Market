@@ -40,7 +40,12 @@ export default function Card({ product }) {
           <div
             className="product__item__pic set-bg"
             style={{
-              "background-image": `url(${product.thumbnail.split('/media/').pop().split('%3A').join(':')})`,
+              "background-image": `url(${product.thumbnail
+                .split("/media/")
+                .pop()
+                .split("%3A")
+                .join(":")
+                .replace(":/", "://")})`,
             }}
           >
             {product.quantity === 0 ? (
@@ -57,8 +62,7 @@ export default function Card({ product }) {
                 </a>
               </li>
               <li>
-              <a 
-              onClick={(e) => addToCart(e, product.id)}>
+                <a onClick={(e) => addToCart(e, product.id)}>
                   <span class="icon_bag_alt"></span>
                 </a>
               </li>
