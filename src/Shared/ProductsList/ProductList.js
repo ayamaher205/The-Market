@@ -3,15 +3,17 @@ import { useState, useEffect } from "react";
 import { getProducts } from "../../APIs/products";
 import { getAllCategories } from "../../APIs/categories";
 import { ProductsByCategories } from "../../APIs/products";
+import Loader from "../Loader/Loader";
 
 export default function ProductsList({ product }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const [isloading, setLoading] = useState(true);
   useEffect(() => {
     getAllCategories()
       .then((data) => {
         setCategories(data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching categories:", err);
@@ -21,18 +23,20 @@ export default function ProductsList({ product }) {
     getProducts()
       .then((data) => {
         setProducts(data.data.latest_products);
+        setLoading(false);
       })
       .catch((err) => console.log(err.message));
-}
-  useEffect( () => {
-    getAllProducts()
+  };
+  useEffect(() => {
+    getAllProducts();
   }, []);
 
-  const handleCategoryFilter = ( categoryId ) => {
-    console.log( categoryId );
+  const handleCategoryFilter = (categoryId) => {
+    console.log(categoryId);
     ProductsByCategories(categoryId)
       .then((response) => {
         setProducts(response.data.results);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching products by category:", error);
@@ -51,7 +55,14 @@ export default function ProductsList({ product }) {
             </div>
             <div className="col-lg-8 col-md-8">
               <ul className="filter__controls">
-                <li className="active" data-filter="*" onClick={getAllProducts}>
+                <li
+                  className="active"
+                  data-filter="*"
+                  onClick={() => {
+                    getAllProducts();
+                    setLoading(true);
+                  }}
+                >
                   All
                 </li>
                 {categories.slice(0, 6).map((category) => (
@@ -59,7 +70,10 @@ export default function ProductsList({ product }) {
                     className="active"
                     data-filter=".women"
                     key={category.id}
-                    onClick={() => handleCategoryFilter(category.id)}
+                    onClick={() => {
+                      handleCategoryFilter(category.id);
+                      setLoading(true);
+                    }}
                   >
                     {category.name}
                   </li>
@@ -67,11 +81,19 @@ export default function ProductsList({ product }) {
               </ul>
             </div>
           </div>
-          <div className="row property__gallery">
-            {products?.map((product) => (
-              <Card product={product}></Card>
-            ))}
-          </div>
+          {isloading ? (
+            <div className="text-center w-100">
+              <Loader />
+            </div>
+          ) : products.length === 0 ? (
+            <p className="text-center w-100">No products available in This Section</p>
+          ) : (
+            <div className="row property__gallery">
+              {products?.map((product) => (
+                <Card product={product}></Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

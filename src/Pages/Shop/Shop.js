@@ -9,17 +9,21 @@ import { getAllCategories } from "../../APIs/categories";
 import Card from "../../Shared/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { changePage } from "../../store/slices/Pagination";
+import Loader from "../../Shared/Loader/Loader";
+
 export default function AllProducts() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState([]);
+  const [isloading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const next = useSelector( ( state ) => state.pages.next );
+  const next = useSelector((state) => state.pages.next);
   const previous = useSelector((state) => state.pages.previous);
   useEffect(() => {
     getAllCategories()
       .then((data) => {
         setCategories(data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log("Error fetching categories:", err);
@@ -32,9 +36,10 @@ export default function AllProducts() {
       try {
         if (searchTerm === "") {
           productsPromise = await getAllProducts();
-          console.log(productsPromise.data)
-          
+          console.log(productsPromise.data);
+
           setProducts(productsPromise.data.results);
+          setLoading(false);
           dispatch(
             changePage({
               next: productsPromise.data.next,
@@ -42,15 +47,19 @@ export default function AllProducts() {
             })
           );
         } else {
-          productsPromise = await searchProducts( searchTerm );
-          var arr = productsPromise.data.results
+          productsPromise = await searchProducts(searchTerm);
+          var arr = productsPromise.data.results;
           for (var key in productsPromise.data.results) {
             if (arr.hasOwnProperty(key)) {
-                arr[key].thumbnail = arr[key].thumbnail.replace("http://localhost:8000", "");
+              arr[key].thumbnail = arr[key].thumbnail.replace(
+                "http://localhost:8000",
+                ""
+              );
             }
           }
           // console.log("arr============"+arr);
-          setProducts(arr);
+          setProducts( arr );
+          setLoading( false );
         }
       } catch (err) {
         console.error("Error fetching products by category:", err);
@@ -67,6 +76,7 @@ export default function AllProducts() {
     try {
       const nextProductsData = await nextProducts(next);
       setProducts(nextProductsData.data.results);
+      setLoading(false);
       dispatch(
         changePage({
           next: nextProductsData.data.next,
@@ -80,7 +90,9 @@ export default function AllProducts() {
   const goToPreviousPage = async () => {
     try {
       const previousProductsData = await nextProducts(previous);
-      setProducts( previousProductsData.data.results );
+      setProducts(previousProductsData.data.results);
+      setLoading(false);
+
       dispatch(
         changePage({
           next: previousProductsData.data.next,
@@ -95,6 +107,7 @@ export default function AllProducts() {
     ProductsByCategories(categoryId)
       .then((response) => {
         setProducts(response.data.results);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching products by category:", error);
@@ -115,7 +128,10 @@ export default function AllProducts() {
                   <div className="card" key={category.id}>
                     <div
                       className="card-heading active"
-                      onClick={() => handleCategoryFilter(category.id)}
+                      onClick={() => {
+                        handleCategoryFilter(category.id);
+                        setLoading(true);
+                      }}
                     >
                       <h4
                         style={{
@@ -139,14 +155,25 @@ export default function AllProducts() {
           type="text"
           placeholder=" Search...... "
           value={searchTerm}
-          onChange={handleSearchInputChange}
+          onChange={(event) => {
+            handleSearchInputChange(event);
+            setLoading(true);
+          }}
           className="form-control ml-0 my-5 w-25"
         />
-        <div className="row property__gallery">
-          {products.map((product) => (
-            <Card key={product.id} product={product} />
-          ))}
-        </div>
+        {isloading ? (
+          <div className="text-center w-100">
+            <Loader />
+          </div>
+        ) : products.length === 0 ? (
+          <p className="text-center w-100">No products available</p>
+        ) : (
+          <div className="row property__gallery">
+            {products.map((product) => (
+              <Card key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
       <nav
         aria-label="..."
@@ -154,12 +181,24 @@ export default function AllProducts() {
       >
         <ul class="pagination">
           <li class="page-item">
-            <button class="page-link" onClick={goToPreviousPage}>
+            <button
+              class="page-link"
+              onClick={() => {
+                goToPreviousPage();
+                setLoading(true);
+              }}
+            >
               Previous
             </button>
           </li>
           <li class="page-item">
-            <button class="page-link" onClick={goToNextPage}>
+            <button
+              class="page-link"
+              onClick={() => {
+                goToNextPage();
+                setLoading(true);
+              }}
+            >
               Next
             </button>
           </li>

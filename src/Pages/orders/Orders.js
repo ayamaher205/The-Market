@@ -8,6 +8,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { changePage } from "../../store/slices/Pagination";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Shared/Loader/Loader";
+
 import "./Orders.css";
 
 export default function AllOrders() {
@@ -16,6 +18,8 @@ export default function AllOrders() {
   const previous = useSelector((state) => state.pages.previous);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isloading, setLoading] = useState(true);
+
 
   useEffect(() => {
     if (!localStorage.getItem("Token")) {
@@ -30,7 +34,8 @@ export default function AllOrders() {
               totalItems: await fetchTotalItems(order.id),
             }))
           );
-          setOrders(ordersWithTotalItems);
+          setOrders( ordersWithTotalItems );
+          setLoading(false)
           dispatch(
             changePage({
               next: ordersData.data.next,
@@ -58,7 +63,8 @@ export default function AllOrders() {
   const goToNextPage = async () => {
     try {
       const nextOrdersData = await getOrdersForPage(next);
-      setOrders(nextOrdersData.data.results);
+      setOrders( nextOrdersData.data.results );
+      setLoading(false)
       dispatch(
         changePage({
           next: nextOrdersData.data.next,
@@ -73,7 +79,8 @@ export default function AllOrders() {
   const goToPreviousPage = async () => {
     try {
       const previousOrdersData = await getOrdersForPage(previous);
-      setOrders(previousOrdersData.data.results);
+      setOrders( previousOrdersData.data.results );
+      setLoading(false)
       dispatch(
         changePage({
           next: previousOrdersData.data.next,
@@ -96,7 +103,13 @@ export default function AllOrders() {
 
   return (
     <div className="container">
-      <div className="orders-container">
+      {isloading ?
+      (
+            <div className="text-center w-100">
+              <Loader />
+            </div>
+        ) :
+      (<div className="orders-container">
         {orders.map((order) => (
           <div className="order" key={order.id}>
             <h6 style={{ alignSelf: "flex-start" }}>
@@ -149,7 +162,7 @@ export default function AllOrders() {
             </li>
           </ul>
         </nav>
-      </div>
+      </div>)}
     </div>
   );
 }

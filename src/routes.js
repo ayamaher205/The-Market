@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet, Route, redirect } from "react-router-dom";
 import Header from "./Pages/Header/header";
 import CategoriesSection from "./Pages/CategoriesSection/CategoriesSection";
 import ShoppingCart from "./Pages/ShoppingCart/ShoppingCart";
@@ -15,7 +15,6 @@ import AllOrders from "./Pages/orders/Orders";
 import OrderItems from "./Pages/OrderItems/OrderItems";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import NotFound from "./Pages/NotFound/NotFound";
-
 const Layout = () => {
   return (
     <>
@@ -25,6 +24,22 @@ const Layout = () => {
     </>
   )
 }
+
+const ProtectedLayout = () => {
+  if ( !localStorage.getItem( "Token" ) )
+  {
+    return redirect("/login");
+  }
+  else {
+    return (
+      <>
+        <Header />
+        <Outlet />
+        <Footer />
+      </>
+    );
+  }
+};
 
 
 const router = createBrowserRouter([
@@ -44,6 +59,9 @@ const router = createBrowserRouter([
         path: "/products/:id",
         element: <ProductDetails />,
       },
+    ],
+    element: <ProtectedLayout />,
+    children:[
       {
         path: "/cart",
         element: <ShoppingCart />,
@@ -80,7 +98,6 @@ const router = createBrowserRouter([
         path: '*',
         element:<NotFound/>
       }
-     
     ],
   },
 ]);

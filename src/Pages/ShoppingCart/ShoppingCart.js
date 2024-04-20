@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import CartItem from "../../Shared/CartItem/CartItem";
 import { stripeCheckout, orderCheckout } from "../../APIs/payment";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../Shared/Loader/Loader";
 
 export default function ShoppingCart() {
   const [cartProducts, setCartProducts] = useState([]);
 
   const [totalPrice, setTotalprice] = useState(null);
+  const [isloading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -17,7 +19,8 @@ export default function ShoppingCart() {
     } else {
       getCartData()
         .then((data) => {
-          setCartProducts(data.data);
+          setCartProducts( data.data );
+          setLoading(false)
           prepareTotalPrice();
         })
         .catch((err) => console.log(err.message));
@@ -92,7 +95,12 @@ export default function ShoppingCart() {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="shop__cart__table">
+              {isloading ? (
+              <div className="text-center w-100">
+                <Loader />
+              </div>
+              ) :
+              (<div className="shop__cart__table">
                 <table>
                   <thead>
                     <tr>
@@ -117,7 +125,8 @@ export default function ShoppingCart() {
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </div>)
+              }
             </div>
           </div>
           <div className="row">
