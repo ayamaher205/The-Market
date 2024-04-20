@@ -70,9 +70,14 @@ export default function OrderItemsPage() {
                           {productDetails[item.product] ? (
                             <img
                               // src={productDetails[item.product].thumbnail}
-                              src={`${base_URL}/${productDetails[item.product].thumbnail}`} 
-                              width={'140px'} 
-                              style={{'border-radius': '15px' }}
+                              src={`${productDetails[item.product].thumbnail
+                                .split("/media/")
+                                .pop()
+                                .split("%3A")
+                                .join(":")
+                                .replace(":/", "://")}`}
+                              width={"140px"}
+                              style={{ "border-radius": "15px" }}
                               alt="Product Thumbnail"
                             />
                           ) : (

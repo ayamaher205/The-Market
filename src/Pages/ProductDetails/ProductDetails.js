@@ -74,43 +74,56 @@ const ProductDetails = () => {
                 <div class="carousel-inner" role="listbox">
                   <div class="carousel-item active">
                     {" "}
-                    <img
-                      class="d-block w-100"
-                      alt="First slide"
-                      />{" "}
-
-                  {product.thumbnail ? (
-                    <img
-                    class="d-block w-100 img-fluid"
-                    src={`${product.thumbnail.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                    <img class="d-block w-100" alt="First slide" />{" "}
+                    {product.thumbnail ? (
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${product.thumbnail
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}
-
-
                   </div>
                   <div class="carousel-item">
                     {" "}
-                    {productImages.length > 0 && productImages[0] && productImages[0].image ? (
-                     <img
-                     class="d-block w-100 img-fluid"
-                     src={`${productImages[0].image.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                    {productImages.length > 0 &&
+                    productImages[0] &&
+                    productImages[0].image ? (
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${productImages[0].image
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}{" "}
                   </div>
                   <div class="carousel-item">
                     {" "}
-                    {productImages.length > 0 && productImages[1] && productImages[1].image ? (
-                     <img
-                     class="d-block w-100 img-fluid"
-                     src={`${productImages[1].image.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                    {productImages.length > 0 &&
+                    productImages[1] &&
+                    productImages[1].image ? (
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${productImages[1].image
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}{" "}
@@ -141,34 +154,52 @@ const ProductDetails = () => {
                     class="active"
                   >
                     {product.thumbnail ? (
-                    <img
-                    class="d-block w-100 img-fluid"
-                    src={`${product.thumbnail.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${product.thumbnail
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}
                   </li>
                   <li data-target="#carousel-example-1" data-slide-to="1">
-                    {productImages.length > 0 && productImages[0] && productImages[0].image ? (
-                     <img
-                     class="d-block w-100 img-fluid"
-                     src={`${productImages[0].image.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                    {productImages.length > 0 &&
+                    productImages[0] &&
+                    productImages[0].image ? (
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${productImages[0].image
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}
-                    
                   </li>
                   <li data-target="#carousel-example-1" data-slide-to="2">
-                  {productImages.length > 0 && productImages[1] && productImages[1].image ? (
-                     <img
-                     class="d-block w-100 img-fluid"
-                     src={`${productImages[1].image.split('/media/').pop().split('%3A').join(':')}`}
-                     alt=""
-                   />
+                    {productImages.length > 0 &&
+                    productImages[1] &&
+                    productImages[1].image ? (
+                      <img
+                        class="d-block w-100 img-fluid"
+                        src={`${productImages[1].image
+                          .split("/media/")
+                          .pop()
+                          .split("%3A")
+                          .join(":")
+                          .replace(":/", "://")}`}
+                        alt=""
+                      />
                     ) : (
                       <div>Loading...</div>
                     )}
