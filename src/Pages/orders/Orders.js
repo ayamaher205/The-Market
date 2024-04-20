@@ -12,157 +12,161 @@ import Loader from "../../Shared/Loader/Loader";
 
 import "./Orders.css";
 
-export default function AllOrders() {
-  const [orders, setOrders] = useState([]);
-  const next = useSelector((state) => state.pages.next);
-  const previous = useSelector((state) => state.pages.previous);
+export default function AllOrders () {
+  const [ orders, setOrders ] = useState( [] );
+  const next = useSelector( ( state ) => state.pages.next );
+  const previous = useSelector( ( state ) => state.pages.previous );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isloading, setLoading] = useState(true);
+  const [ isloading, setLoading ] = useState( true );
 
 
-  useEffect(() => {
-    if (!localStorage.getItem("Token")) {
-      navigate("/login");
+  useEffect( () => {
+    if ( !localStorage.getItem( "Token" ) ) {
+      navigate( "/login" );
     } else {
       const fetchData = async () => {
         try {
           const ordersData = await getAllOrders();
           const ordersWithTotalItems = await Promise.all(
-            ordersData.data.results.map(async (order) => ({
+            ordersData.data.results.map( async ( order ) => ( {
               ...order,
-              totalItems: await fetchTotalItems(order.id),
-            }))
+              totalItems: await fetchTotalItems( order.id ),
+            } ) )
           );
           setOrders( ordersWithTotalItems );
-          setLoading(false)
+          setLoading( false )
           dispatch(
-            changePage({
+            changePage( {
               next: ordersData.data.next,
               previous: ordersData.data.previous,
-            })
+            } )
           );
-        } catch (error) {
-          console.error("Error fetching orders:", error);
+        } catch ( error ) {
+          console.error( "Error fetching orders:", error );
         }
       };
       fetchData();
     }
-  }, [navigate]);
+  }, [ navigate ] );
 
-  const fetchTotalItems = async (orderId) => {
+  const fetchTotalItems = async ( orderId ) => {
     try {
-      const response = await getAllOrdersItems(orderId);
+      const response = await getAllOrdersItems( orderId );
       return response.data.length;
-    } catch (error) {
-      console.error(`Error fetching items for order ${orderId}:`, error);
+    } catch ( error ) {
+      console.error( `Error fetching items for order ${ orderId }:`, error );
       return 0;
     }
   };
 
   const goToNextPage = async () => {
     try {
-      const nextOrdersData = await getOrdersForPage(next);
+      const nextOrdersData = await getOrdersForPage( next );
       setOrders( nextOrdersData.data.results );
-      setLoading(false)
+      setLoading( false )
       dispatch(
-        changePage({
+        changePage( {
           next: nextOrdersData.data.next,
           previous: nextOrdersData.data.previous,
-        })
+        } )
       );
-    } catch (err) {
-      console.log("there is no next products");
+    } catch ( err ) {
+      console.log( "there is no next products" );
     }
   };
 
   const goToPreviousPage = async () => {
     try {
-      const previousOrdersData = await getOrdersForPage(previous);
+      const previousOrdersData = await getOrdersForPage( previous );
       setOrders( previousOrdersData.data.results );
-      setLoading(false)
+      setLoading( false )
       dispatch(
-        changePage({
+        changePage( {
           next: previousOrdersData.data.next,
           previous: previousOrdersData.data.previous,
-        })
+        } )
       );
-    } catch (err) {
-      console.log("there is no previous products");
+    } catch ( err ) {
+      console.log( "there is no previous products" );
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+  const formatDate = ( dateString ) => {
+    const date = new Date( dateString );
+    return date.toLocaleDateString( "en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
+    } );
   };
 
   return (
     <div className="container">
-      {isloading ?
-      (
-            <div className="text-center w-100">
-              <Loader />
+      {isloading ? (
+        <div className="text-center w-100">
+          <Loader />
+        </div>
+      ) : orders.length === 0 ? (
+        <div className="text-center w-100 my-5 text-black-50">
+          You don't have any orders yet!
+        </div>
+      ) : (
+        <div className="orders-container">
+          {orders.map((order) => (
+            <div className="order" key={order.id}>
+              <h6 style={{ alignSelf: "flex-start" }}>
+                Order Number: {order.id}
+              </h6>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <ul>
+                  <li>
+                    Total Items: <span>{order.totalItems}</span>
+                  </li>
+                  <li>
+                    Total Price: <span>{order.total_price} $</span>
+                  </li>
+                  <li>
+                    Status:{" "}
+                    <span className={getStatusClassName(order.status)}>
+                      {order.status}
+                    </span>
+                  </li>
+                  <li>
+                    Created At: <span>{formatDate(order.created_at)}</span>
+                  </li>
+                </ul>
+                <Link className="button" to={`/order-details/${order.id}`}>
+                  Show Items
+                </Link>
+              </div>
             </div>
-        ) :
-      (<div className="orders-container">
-        {orders.map((order) => (
-          <div className="order" key={order.id}>
-            <h6 style={{ alignSelf: "flex-start" }}>
-              Order Number: {order.id}
-            </h6>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <ul>
-                <li>
-                  Total Items: <span>{order.totalItems}</span>
-                </li>
-                <li>
-                  Total Price: <span>{order.total_price} $</span>
-                </li>
-                <li>
-                  Status:{" "}
-                  <span className={getStatusClassName(order.status)}>
-                    {order.status}
-                  </span>
-                </li>
-                <li>
-                  Created At: <span>{formatDate(order.created_at)}</span>
-                </li>
-              </ul>
-              <Link className="button" to={`/order-details/${order.id}`}>
-                Show Items
-              </Link>
-            </div>
-          </div>
-        ))}
-        <nav
-          aria-label="..."
-          className="col-lg-9 col-md-9 d-flex justify-content-center mt-3 w-100"
-        >
-          <ul className="pagination">
-            <li className="page-item">
-              <button className="page-link" onClick={goToPreviousPage}>
-                Previous
-              </button>
-            </li>
-            <li className="page-item">
-              <button className="page-link" onClick={goToNextPage}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>)}
+          ))}
+          <nav
+            aria-label="..."
+            className="col-lg-9 col-md-9 d-flex justify-content-center mt-3 w-100 m-l-20"
+          >
+            <ul className="pagination">
+              <li className="page-item">
+                <button className="page-link" onClick={goToPreviousPage}>
+                  Previous
+                </button>
+              </li>
+              <li className="page-item">
+                <button className="page-link" onClick={goToNextPage}>
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </div>
   );
 }

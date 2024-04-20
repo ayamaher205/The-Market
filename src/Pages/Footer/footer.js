@@ -108,7 +108,7 @@ const Footer = () => {
                 <p>
                   Copyright &copy;{" "}
                   <script>document.write(new Date().getFullYear());</script> All
-                  rights reserved | This template is made with{" "}
+                  rights reserved {" "}
                   <i className="fa fa-heart" aria-hidden="true"></i>{" "}
                 </p>
               </div>

@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 import "./ProductDetails.css";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
-
+import {addProductToCart} from '../../APIs/cart'
 const ProductDetails = () => {
   const base_URL = "http://127.0.0.1:8000";
   const [productCategory, setproductCategory] = useState([]);
@@ -31,6 +31,18 @@ const ProductDetails = () => {
       .then((res) => console.log(res.data.value))
       .catch((err) => console.log(err));
   };
+function addToCart(e, id) {
+  if (localStorage.getItem("Token")) {
+    e.preventDefault();
+    addProductToCart(id)
+      .then(() => {
+        alert("Added to cart successfully");
+      })
+      .catch((err) => alert("Auth Error : You must login first!"));
+  } else {
+    alert("You must login first!");
+  }
+}
 
   useEffect(() => {
     getProductDetails(params.id)
@@ -224,7 +236,10 @@ const ProductDetails = () => {
                       <LikedProduct product={product.id} />
                     </li>
                     <li>
-                      <FontAwesomeIcon icon={faShoppingBag} />
+                      <FontAwesomeIcon
+                        icon={faShoppingBag}
+                        onClick={(e) => addToCart(e, product.id)}
+                      />
                     </li>
                   </ul>
                 </div>

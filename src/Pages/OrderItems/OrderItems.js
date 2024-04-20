@@ -47,7 +47,7 @@ export default function OrderItemsPage() {
 
   return (
     <>
-      <h2>Order Items for Order Number: {orderId}</h2>
+      <h2 className="w-100 d-flex justify-content-center m-t-20 text-dark-emphasis">Order Items for Order Number: {orderId}</h2>
 
       <section className="shop-cart spad">
         <div className="container">

@@ -33,13 +33,12 @@ export default function CartItem({
 
   const updateQuantity = (e, cartItemId) => {
     e.preventDefault();
-    console.log(quantity);
     // chg_cart_total(cart_total - cartData.product.price*cartData.quantity)
 
     updateCartProductQuantity(cartItemId, quantity)
       .then(() => {
         alert("Updated to cart successfully");
-        setcitemPrice(cartData.product.price * quantity);
+        setcitemPrice( cartData.product.price * quantity );
         chg_cart_total(cart_total - cartData.product.price * quantity);
       })
       .catch((err) => alert("error: Quantity is more than available"));
@@ -49,29 +48,25 @@ export default function CartItem({
     <>
       <tr>
         <td className="cart__product__item">
-          {product.thumbnail ? (
+          {cartData.product.thumbnail ? (
             <img
-              class="d-block w-100 img-fluid"
+              class="d-block img-fluid"
               src={`${cartData.product.thumbnail
                 .split("/media/")
                 .pop()
                 .split("%3A")
                 .join(":")
                 .replace(":/", "://")}`}
+              width={"140px"}
+              height={"140px"}
+              style={{ "border-radius": "15px" }}
               alt=""
             />
           ) : (
             <div>Loading...</div>
           )}
-          <div className="cart__product__item__title">
-            <h6>{cartData.product.name}</h6>
-            <div className="rating">
-              {/* <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i> */}
-            </div>
+          <div className="cart__product__item__title d-flex align-items-center m-t-30">
+            <h6 className="">{cartData.product.name}</h6>
           </div>
         </td>
         <td className="cart__price">$ {cartData.product.price}</td>
