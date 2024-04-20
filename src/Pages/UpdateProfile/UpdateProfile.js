@@ -196,7 +196,7 @@ const UpdateProfile = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         className="form-control"
-                        value={user[0].email}
+                        value={values.email}
                       />
                       {errors.email && touched.email ? (
                         <p className="text-danger">{errors.email}</p>
@@ -216,7 +216,7 @@ const UpdateProfile = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         className="form-control"
-                        value={user[0].phone}
+                        value={values.phone}
                       />
                       {errors.phone && touched.phone ? (
                         <p className="text-danger">{errors.phone}</p>
