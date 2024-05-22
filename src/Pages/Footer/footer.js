@@ -13,92 +13,27 @@ const Footer = () => {
                   </Link>
                 </div>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt cilisis.
+    Ashion Shop is your go-to destination for the latest and greatest in clothes, electronics, and more. 
+Our mission is to provide high-quality products at unbeatable prices, ensuring a seamless and enjoyable shopping experience for all our customers. 
+From exclusive deals to fast and reliable shipping, we strive to make your shopping journey as effortless and rewarding as possible. 
+Trust our shop for all your shopping needs – where quality meets convenience.
                 </p>
-                <div className="footer__payment">
-                  <Link to="#">
-                    <img src="img/payment/payment-1.png" alt="" />
-                  </Link>
-                  <Link to="#">
-                    <img src="img/payment/payment-2.png" alt="" />
-                  </Link>
-                  <Link to="#">
-                    <img src="img/payment/payment-3.png" alt="" />
-                  </Link>
-                  <Link to="#">
-                    <img src="img/payment/payment-4.png" alt="" />
-                  </Link>
-                  <Link to="#">
-                    <img src="img/payment/payment-5.png" alt="" />
-                  </Link>
-                </div>
+               
               </div>
             </div>
             <div className="col-lg-2 col-md-3 col-sm-5">
               <div className="footer__widget">
-                <h6>Quick links</h6>
-                <ul>
-                  <li>
-                    <Link to="#">About</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Blogs</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Contact</Link>
-                  </li>
-                  <li>
-                    <Link to="#">FAQ</Link>
-                  </li>
-                </ul>
+               
               </div>
             </div>
             <div className="col-lg-2 col-md-3 col-sm-4">
               <div className="footer__widget">
-                <h6>Account</h6>
-                <ul>
-                  <li>
-                    <Link to="#">My Account</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Orders Tracking</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Checkout</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Wishlist</Link>
-                  </li>
-                </ul>
+               
               </div>
             </div>
             <div className="col-lg-4 col-md-8 col-sm-8">
               <div className="footer__newslatter">
-                <h6>NEWSLETTER</h6>
-                <form action="#">
-                  <input type="text" placeholder="Email" />
-                  <button type="submit" className="site-btn">
-                    Subscribe
-                  </button>
-                </form>
-                <div className="footer__social">
-                  <Link to="#">
-                    <i className="fa fa-facebook"></i>
-                  </Link>
-                  <Link to="#">
-                    <i className="fa fa-twitter"></i>
-                  </Link>
-                  <Link to="#">
-                    <i className="fa fa-youtube-play"></i>
-                  </Link>
-                  <Link to="#">
-                    <i className="fa fa-instagram"></i>
-                  </Link>
-                  <Link to="#">
-                    <i className="fa fa-pinterest"></i>
-                  </Link>
-                </div>
+                               
               </div>
             </div>
           </div>
